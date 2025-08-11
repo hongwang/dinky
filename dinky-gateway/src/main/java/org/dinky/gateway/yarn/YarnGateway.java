@@ -139,8 +139,10 @@ public abstract class YarnGateway extends AbstractGateway {
 
         configuration.set(DeploymentOptions.TARGET, getType().getLongValue());
 
+//        configuration.set(
+//                YarnConfigOptions.PROVIDED_LIB_DIRS, Collections.singletonList(clusterConfig.getFlinkLibPath()));
         configuration.set(
-                YarnConfigOptions.PROVIDED_LIB_DIRS, Collections.singletonList(clusterConfig.getFlinkLibPath()));
+                YarnConfigOptions.PROVIDED_LIB_DIRS,  Arrays.asList(clusterConfig.getFlinkLibPath().split(";")));
         if (Asserts.isNotNullString(flinkConfig.getJobName())) {
             configuration.set(YarnConfigOptions.APPLICATION_NAME, flinkConfig.getJobName());
         }
@@ -513,7 +515,8 @@ public abstract class YarnGateway extends AbstractGateway {
                         + HighAvailabilityOptions.HA_ZOOKEEPER_QUORUM.key()
                         + "'.");
             }
-            int sessionTimeout = Convert.toInt(configuration.get(HighAvailabilityOptions.ZOOKEEPER_SESSION_TIMEOUT));
+//            int sessionTimeout = Convert.toInt(configuration.get(HighAvailabilityOptions.ZOOKEEPER_SESSION_TIMEOUT));
+            int sessionTimeout = Convert.toInt(configuration.get(HighAvailabilityOptions.ZOOKEEPER_SESSION_TIMEOUT).toMillis());
             String root = configuration.getValue(HighAvailabilityOptions.HA_ZOOKEEPER_ROOT);
             String namespace = configuration.getValue(HighAvailabilityOptions.HA_CLUSTER_ID);
 
