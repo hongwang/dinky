@@ -22,6 +22,7 @@ package org.dinky.trans.ddl;
 import org.dinky.assertion.Asserts;
 import org.dinky.data.model.FlinkCDCConfig;
 import org.dinky.parser.SingleSqlParserFactory;
+import org.dinky.utils.ShadeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -130,6 +131,8 @@ public class CDCSource {
     public static CDCSource build(String statement) {
         Map<String, List<String>> map = SingleSqlParserFactory.generateParser(statement);
         Map<String, String> config = getKeyValue(map.get("WITH"));
+
+        ShadeUtils.decryptConfig(config);
 
         Map<String, String> debezium = createConfigure(config, "debezium.");
         Map<String, String> split = createConfigure(config, "split.");
